@@ -3,6 +3,7 @@ import { join, resolve } from "node:path"
 
 const slug = /^[a-z0-9]+(-[a-z0-9]+)*\.md$/
 const source = /^[A-Za-z0-9-]+\/[A-Za-z0-9._-]+(\/[^\s]+)?$/
+const maxDescriptionLength = 120
 const maxBodyLength = 600
 
 export const factsDirectory = resolve(import.meta.dir, "..", "facts")
@@ -35,6 +36,8 @@ export const lintFact = (file: string, text: string) => {
 
   if (typeof description !== "string" || !description.trim() || description.includes("\n")) {
     errors.push("description must be one non-empty line")
+  } else if (description.length > maxDescriptionLength) {
+    errors.push(`description is ${description.length} characters, keep it at most ${maxDescriptionLength}`)
   }
 
   const validSources = Array.isArray(sources) && sources.every((entry) => typeof entry === "string" && source.test(entry))

@@ -2,7 +2,7 @@
 
 Keep one fact per file in `facts/`. A fact records what an agent cannot learn from the source, such as a decision and its reason or where the authoritative information lives. Leave out copied implementation details that will go stale.
 
-Use a kebab-case filename ending in `.md`, a single-line `description` and a body of at most 600 characters. Optional `sources` entries use `owner/repo` or `owner/repo/path`.
+Use a kebab-case filename ending in `.md`, a single-line `description` of at most 120 characters and a body of at most 600 characters. Optional `sources` entries use `owner/repo` or `owner/repo/path`.
 
 ```markdown
 ---

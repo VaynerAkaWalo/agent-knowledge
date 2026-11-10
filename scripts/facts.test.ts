@@ -8,6 +8,13 @@ test("accepts a short fact with sources", () => {
   expect(lintFact("shared-decisions.md", fact("description: Shared decisions live here\nsources:\n  - example/project"))).toEqual([])
 })
 
+test("limits descriptions to 120 characters so the fact index stays concise", () => {
+  expect(lintFact("a.md", fact(`description: ${"x".repeat(120)}`))).toEqual([])
+  expect(lintFact("a.md", fact(`description: ${"x".repeat(121)}`))).toContain(
+    "description is 121 characters, keep it at most 120",
+  )
+})
+
 test("rejects long bodies so facts point to the source instead of copying it", () => {
   const errors = lintFact("shared-decisions.md", fact("description: Shared decisions live here", "x".repeat(601)))
 
