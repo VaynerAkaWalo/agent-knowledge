@@ -5,4 +5,4 @@ description: The most important facts about my projects and how I develop them. 
 
 My knowledge base is the git repo at `{{root}}`. Pull before reading.
 
-Start by reading the index with `grep -H '^description:' facts/*.md`, then read the facts that bear on the task and follow their sources on the current default branch, since local checkouts can be stale. When a source disagrees with a fact or no longer exists, the source wins, so tell me the fact needs fixing.
+Start by reading the index with `find facts -maxdepth 1 -type f -name '*.md' -exec grep -H '^description:' {} +`. No output means no facts have been added yet. Read the facts that bear on the task and follow their sources on the current default branch, since local checkouts can be stale. When a source disagrees with a fact or no longer exists, the source wins, so tell me the fact needs fixing.
