@@ -1,16 +1,18 @@
 # Reviewing changes
 
-Every agent reads every description at the start of every task and opens the facts that match, so a weak line costs every future task. Assume the change is wrong until you have challenged it from each view below. Treat the PR description, the author's verification and earlier reviews as claims to check, not evidence.
+Agents pick documents by their descriptions in search results and preset lists, and a preset puts its descriptions into every conversation in a repo, so a weak line costs many future tasks. Assume the change is wrong until you have challenged it from each view below. Treat the PR description, the author's verification and earlier reviews as claims to check, not evidence.
 
 ## Description
 
-- Name real tasks that need the fact and check each would match, then name unrelated tasks that would wrongly match.
+- Name real tasks that need the document and check each would match, then name unrelated tasks that would wrongly match.
 - Remove each clause in turn and ask which task stops matching. A clause no task needs is filler.
-- Flag any rule, conclusion, exception or rare detail. Those belong in the body, and in the description they reach every conversation.
-- Flag implementation names where a task would use other words, and overlap with another fact's description that leaves an agent unsure which to open.
+- Flag any rule, conclusion, exception or rare detail. Those belong in the body, and in the description they reach every search result and preset list.
+- Flag implementation names where a task would use other words, and overlap with another document's description that leaves an agent unsure which to open.
 - Check the body answers everything the description promises.
 
 ## Body
+
+These checks are written for facts. A doc gets them all except the single-decision and length limits, a spec has to say what the feature is meant to do and why, and a note needs only a description that will find it and links to what came out of it.
 
 - Name the decision an agent faces when the fact applies and check the body answers it first, or says who decides.
 - Remove each sentence in turn and ask what an agent would do differently. A sentence that changes nothing is filler.
@@ -19,13 +21,20 @@ Every agent reads every description at the start of every task and opens the fac
 - Flag a fact that holds more than one decision, detail beyond what most tasks need, vague words that leave the agent to guess, and anything else AGENTS.md rules out.
 - Check that the sources hold the details the fact compresses, so an agent that needs more knows where to read it. A fact without sources has to be one of the owner's own rules.
 
+## Kind, trust and presets
+
+- Check the kind fits how the document should age: facts and docs stay current, while implemented specs and notes stay as written.
+- Flag a document added as `reliable`, a raised trust, or a reliable document edited without being downgraded, unless the owner made or asked for the change.
+- Flag edits to the description or body of an implemented spec.
+- Flag a preset entry that most tasks in that repo, or in every repo for `presets/all.md`, wouldn't need.
+
 ## Truth
 
 Check each changed claim against its source on the default branch on origin, since local checkouts go stale. Compare every reworded claim with the version it replaces and flag qualifications that got lost or meanings that got broader, including cuts made to fit the length limit.
 
 ## Ripple and motivation
 
-Look for other facts, skills, AGENTS.md or the README that the change contradicts or leaves stale, and for examples in untouched facts that no longer hold. For a change to the rules themselves, a request from the owner is reason enough. Otherwise ask which failure it fixes and what shows the new rule works, and when a rule keeps changing, ask what the last change got wrong.
+Look for other documents, presets, skills, AGENTS.md, docs/spec.md or the README that the change contradicts or leaves stale, and for examples in untouched documents that no longer hold. For a change to the rules themselves, a request from the owner is reason enough. Otherwise ask which failure it fixes and what shows the new rule works, and when a rule keeps changing, ask what the last change got wrong.
 
 ## Report
 
