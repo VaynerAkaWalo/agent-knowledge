@@ -60,8 +60,9 @@ export const linkTarget = (inner: string) => {
 
 export const extractLinks = (body: string) => {
   const prose = body
-    .replace(/```[\s\S]*?```/g, "")
-    .replace(/~~~[\s\S]*?~~~/g, "")
+    .replace(/^ {0,3}```[\s\S]*?^ {0,3}```/gm, "")
+    .replace(/^ {0,3}~~~[\s\S]*?^ {0,3}~~~/gm, "")
+    .replace(/<!--[\s\S]*?-->/g, "")
     .replace(/`[^`\n]*`/g, "")
     .replace(/%%[\s\S]*?%%/g, "")
 

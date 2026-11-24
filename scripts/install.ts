@@ -1,4 +1,4 @@
-import { chmod, mkdir, readdir, readFile, realpath, rename, writeFile } from "node:fs/promises"
+import { chmod, mkdir, mkdtemp, readdir, readFile, realpath, rename, rmdir, writeFile } from "node:fs/promises"
 import { homedir } from "node:os"
 import { delimiter, join, resolve } from "node:path"
 
@@ -12,12 +12,15 @@ exec ${shellQuote(process.execPath)} ${shellQuote(join(root, "scripts", "kb.ts")
 `
 
 const launcherPath = join(binDirectory, "kb")
-const staged = join(binDirectory, `.kb-${process.pid}`)
 
 await mkdir(binDirectory, { recursive: true })
+const staging = await mkdtemp(join(binDirectory, ".kb-"))
+const staged = join(staging, "kb")
+
 await writeFile(staged, launcher)
 await chmod(staged, 0o755)
 await rename(staged, launcherPath)
+await rmdir(staging)
 
 console.log(`kb: ${launcherPath}`)
 

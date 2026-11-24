@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test"
-import { maxHits, search } from "./search.ts"
+import { search } from "./search.ts"
 import type { Document } from "./vault.ts"
 
 const document = (slug: string, description: string, body: string): Document => ({
@@ -36,6 +36,6 @@ test("ranks a match in the slug above the same match in a shorter body", () => {
 test("finds documents by their body and returns at most the hit limit", () => {
   const documents = Array.from({ length: 15 }, (_, index) => document(`doc-${index}`, "Unrelated", "graphql"))
 
-  expect(slugs(documents, "graphql")).toHaveLength(maxHits)
+  expect(slugs(documents, "graphql")).toHaveLength(10)
   expect(slugs(documents, "kafka")).toEqual([])
 })

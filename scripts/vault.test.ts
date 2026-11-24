@@ -74,7 +74,7 @@ test("treats a note as reference and requires the date it was written", () => {
   expect(errors("kind: note\ndescription: Triage\ncreated: yesterday").join()).toContain("created must be a date as YYYY-MM-DD")
 })
 
-test("reads the Obsidian link forms and ignores links inside code and comments", () => {
+test("reads the Obsidian link forms and ignores links inside code, comments and HTML comments", () => {
   const body = [
     "See [[releasing]], [[service-map|the map]], [[queues#Retries]], [[glossary.md]] and ![[diagram.png]].",
     "```\n[[fenced]]\n```",
@@ -82,9 +82,11 @@ test("reads the Obsidian link forms and ignores links inside code and comments",
     "Use `%%` as the marker, see [[visible]].",
     "%% [[comment]] %%",
     "Also `[[inline]]` and [[releasing]].",
+    "<!-- [[hidden]] -->",
+    "Tildes ~~~ inline, see [[after-tildes]], then ~~~ again.",
   ].join("\n\n")
 
-  expect(extractLinks(body)).toEqual(["releasing", "service-map", "queues", "glossary", "visible"])
+  expect(extractLinks(body)).toEqual(["releasing", "service-map", "queues", "glossary", "visible", "after-tildes"])
 })
 
 test("keeps a folder in a link so it fails instead of resolving to a file elsewhere", () => {
