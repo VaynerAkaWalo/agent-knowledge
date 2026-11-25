@@ -1,8 +1,31 @@
-import { mkdir, readdir, readFile, realpath, writeFile } from "node:fs/promises"
+import { chmod, mkdir, mkdtemp, readdir, readFile, realpath, rename, rmdir, writeFile } from "node:fs/promises"
 import { homedir } from "node:os"
-import { join, resolve } from "node:path"
+import { delimiter, join, resolve } from "node:path"
 
 const root = resolve(import.meta.dir, "..")
+const binDirectory = process.env.KB_BIN_DIR?.trim() || join(homedir(), ".local", "bin")
+
+const shellQuote = (value: string) => `'${value.replaceAll("'", "'\\''")}'`
+
+const launcher = `#!/bin/sh
+exec ${shellQuote(process.execPath)} ${shellQuote(join(root, "scripts", "kb.ts"))} "$@"
+`
+
+const launcherPath = join(binDirectory, "kb")
+
+await mkdir(binDirectory, { recursive: true })
+const staging = await mkdtemp(join(binDirectory, ".kb-"))
+const staged = join(staging, "kb")
+
+await writeFile(staged, launcher)
+await chmod(staged, 0o755)
+await rename(staged, launcherPath)
+await rmdir(staging)
+
+console.log(`kb: ${launcherPath}`)
+
+const onPath = (process.env.PATH ?? "").split(delimiter).includes(binDirectory)
+if (!onPath) console.warn(`${binDirectory} is not on PATH, add it so agents can run kb`)
 
 const targets = [
   { name: "claude", homeEnv: "CLAUDE_CONFIG_DIR" },
